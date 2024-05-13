@@ -1,0 +1,11 @@
+opencv-python
+pywin32
+pyarmor
+simplejson
+mouse
+MouseInfo
+pyautogui
+pyinstaller
+pynput
+cryptography
+requests
