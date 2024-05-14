@@ -1,67 +1,36 @@
 import sys
-import time
-import datetime
-import importlib
-from itertools import cycle
-from utils.utils import Utils
-from variables.variables import *
+from packages.utils.utils import *
+from packages.variables.variables import *
 
-class ShyPy(Utils):
+from packages.modules.keylogger_generator import Generator
+
+class Shypy(Utils):
     def __init__(self) -> None:
         super().__init__()
-        self.keylogger_module = importlib.import_module("modules.Keylogger_Generator")
-        self.clear()
-
+    
     def run(self) -> None:
-        self.checkin()
+        """
+        Runs the Shypy application.
 
-    def module_exists(self, module_name) -> bool:
-        try:
-            __import__(module_name)
-            return True
+        This method initiates the Shypy application by first checking for required modules
+        using the `check_modules` method, then proceeds to the main menu using the `main` method.
+
+        Returns:
+            None
+        """
+        self.check_modules()
+        self.main()
         
-        except ImportError:
-            return False
-
-    def checkin(self) -> None:
-        self.loader()
-        try:
-            self.clear()
-            missing_libs = [module for module in LIBS if not self.module_exists(module)]
-
-            if missing_libs:
-                print(f"{COLOR["YELLOW"]}[!]{COLOR["RESET"]} The following libraries are missing: {', '.join(missing_libs)}")
-                print(f"{COLOR["MAGENTA"]}[?]{COLOR["RESET"]} Please run {COLOR["YELLOW"]}'pip install -r requirements.txt'{COLOR["RESET"]} or {COLOR["YELLOW"]}'pip install {', '.join(missing_libs)}'{COLOR["RESET"]}")
-                print(f"{COLOR["RED"]}[x]{COLOR["RESET"]} You need to install the required libraries to continue.")
-                sys.exit(1)
-            else:
-                print(f"{COLOR["GREEN"]}[+]{COLOR["RESET"]} All required requirements are already installed.")
-                time.sleep(2)
-                self.main()
-
-        except KeyboardInterrupt:
-            self.clear()
-            print(f'{COLOR["CYAN"]}Signed Out Of The Shypy{COLOR["RESET"]}')
-
-    def loader(self) -> None:
-        try:
-            i = 0
-            for c in cycle(["⢎⡰", "⢎⡡", "⢎⡑", "⢎⠱", "⠎⡱", "⢊⡱", "⢌⡱", "⢆⡱"]):
-                sys.stdout.write(f'\rShypy >> {datetime.datetime.now().strftime("%H:%M:%S")} Checking Requirements..{COLOR["CYAN"]} {c} {COLOR["RESET"]}\t')
-                sys.stdout.flush()
-                time.sleep(0.07)
-                i += 1
-
-                if i == len(LIBS) * 5:
-                    break
-                else:
-                    continue
-        
-        except (KeyboardInterrupt):
-            self.clear()
-            print(f'{COLOR["CYAN"]}Signed Out Of The Shypy{COLOR["RESET"]}')
-
     def main(self) -> None:
+        """
+        Displays the main menu of the Shypy application.
+
+        This method displays the main menu of the Shypy application, where users can select
+        different modules or choose to exit the application.
+
+        Returns:
+            None
+        """
         try:
             self.clear()
             print(f"""{COLOR["CYAN"]}      
@@ -75,25 +44,38 @@ class ShyPy(Utils):
    ╚═╝  ╚═╝  ╚═╝  ╚══════╝    ╚══════╝  ╚═╝  ╚═╝  ╚═════╝   ╚═╝         ╔███║
    ████████████████████████████████████████████████████████████████████████╔╝
    ╚═══════════════════════════════════════════════════════════════════════╝\n""")
-            
-            ans = input('\t\t\t[Press "ENTER" To Continue] ').lower()
+            option = input(f'\t\t\t[Press "ENTER" To Continue] {COLOR["RESET"]}').lower()
 
-            if ans == "":
-                self.program_menu()
+            if option == "":
+                self.menu()
                 
             else:
                 self.main()
         
         except KeyboardInterrupt:
-            self.clear()
-            print(f'{COLOR["CYAN"]}Signed Out Of The Shypy{COLOR["RESET"]}')
+            self.write(message="Exited from Shypy", level=2, delay=0, clear=True)
+            sys.exit(1)
 
-    def program_menu(self) -> None:
+        except EOFError:
+            self.write(message="Exited from Shypy", level=2, delay=0, clear=True)
+            sys.exit(1)
+
+            
+    def menu(self) -> None:
+        """
+        Displays the module selection menu of the Shypy application.
+
+        This method displays the module selection menu of the Shypy application, where users
+        can choose different modules to use or exit the application.
+
+        Returns:
+            None
+        """
         try:
             self.clear()
             print(f"""{COLOR['CYAN']}
             ╔════════════════════════════╦══════════════════════╦════════════════════════╗
-            ║* Version    :     0.1     *║ Welcome To The ShyPy ║*                      *║
+            ║* Version    :     0.1     *║ Welcome To The Shypy ║*                      *║
             ╠════════════════════════════╩═════════╦════════════╩════════════════════════╣
             ║             Module Name              ║          Operating System           ║  
             ╠══════════════════════════════════════╬═════════════════════════════════════╣
@@ -101,7 +83,7 @@ class ShyPy(Utils):
             ║[2] Ransomware Generator              :    [ Windows | Linux | MacOS ]      ║
             ║[3] Camera Recorder Generator         :    [ Windows | Linux | MacOS ]      ║
             ║[4] Screen Recorder Generator         :    [ Windows | Linux | MacOS ]      ║   
-            ║[5] BackDoor Generator                :    [ Windows | Linux | MacOS ]      ║
+            ║[5] Back Door Generator               :    [ Windows | Linux | MacOS ]      ║
             ╠══════════════════════════════════════╬═════════════════════════════════════╣
             ║ "use" <num>                          : Used To Select Modules.             ║
             ║ "exit"                               : To Log Out Of ShyPy.                ║  
@@ -109,37 +91,42 @@ class ShyPy(Utils):
             ║*                       *║ Developed by Atahan Poyraz ║*                   *║
             ╚═════════════════════════╩════════════════════════════╩═════════════════════╝\n""")
         
-            ans = input(f"{COLOR["CYAN"]}ShyPy >> {COLOR["RESET"]}").lower()
+            option = input(f"{COLOR["CYAN"]}Shypy >> {COLOR["RESET"]}").lower()
             try:
-                if ans.startswith("use"):                
-                    if ans.split(" ")[1] in ("1", "keylogger generator"):
-                        self.module = self.keylogger_module.KeyloggerGenerator()  
-                        self.module.start()
+                if option.startswith("use"):                
+                    if option.split(" ")[1] in ("1", "keylogger generator"):
+                        Generator().run()
+                        
+                    elif option.split(" ")[1] in ("2", "ransomware generator"):
+                        ...
+                    
+                    elif option.split(" ")[1] in ("3", "camera recorder generator"):
+                        ...
+                        
+                    elif option.split(" ")[1] in ("4", "screen recorder generator"):
+                        ...
+                        
+                    elif option.split(" ")[1] in ("5", "backdoor generator"):
+                        ...
                         
                     else:
-                        print(f'{COLOR["YELLOW"]}[!]{COLOR["RESET"]} Invalid Module')
-                        time.sleep(0.5)
-                        self.program_menu()
+                        self.write(message="Invalid Module", level=4, delay=1, clear=True)
+                        self.menu()
             
-                elif ans == "exit":
-                    self.clear()
-                    print(f'{COLOR["CYAN"]}Signed Out Of The Shypy{COLOR["RESET"]}')
+                elif option == "exit":
+                    self.write(message="Exited from Shypy", level=2, delay=0, clear=True)
 
                 else:
-                    print(f'{COLOR["YELLOW"]}[!]{COLOR["RESET"]} Invalid Option')
-                    time.sleep(0.5)
-                    self.program_menu()
+                    self.write(message="Invalid Option", level=4, delay=1, clear=True)
+                    self.menu()
                     
             except IndexError:
-                print(f'{COLOR["YELLOW"]}[!]{COLOR["RESET"]} Invalid Module')
-                time.sleep(0.5)
-                self.program_menu()
-
+                self.write(message="Invalid Module", level=4, delay=1, clear=True)
+                self.menu()
 
         except KeyboardInterrupt:
-            self.clear()
-            print(f'{COLOR["CYAN"]}Signed Out Of The Shypy{COLOR["RESET"]}')
+            self.write(message="Exited from Shypy", level=2, delay=0, clear=True)
+            sys.exit(1)
 
 if __name__ == "__main__":
-    s = ShyPy()
-    s.run()
+    Shypy().run()
