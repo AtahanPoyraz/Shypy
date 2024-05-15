@@ -1,8 +1,13 @@
 import sys
+
 from packages.utils.utils import *
 from packages.variables.variables import *
 
-from packages.modules.keylogger_generator import Generator
+from packages.modules.module_1 import KeyloggerGenerator
+from packages.modules.module_2 import RansomwareGenerator
+from packages.modules.module_3 import CameraRecorderGenerator
+from packages.modules.module_4 import ScreenRecorderGenerator
+from packages.modules.module_5 import BackDoorGenerator
 
 class Shypy(Utils):
     def __init__(self) -> None:
@@ -44,6 +49,7 @@ class Shypy(Utils):
    ╚═╝  ╚═╝  ╚═╝  ╚══════╝    ╚══════╝  ╚═╝  ╚═╝  ╚═════╝   ╚═╝         ╔███║
    ████████████████████████████████████████████████████████████████████████╔╝
    ╚═══════════════════════════════════════════════════════════════════════╝\n""")
+            
             option = input(f'\t\t\t[Press "ENTER" To Continue] {COLOR["RESET"]}').lower()
 
             if option == "":
@@ -91,23 +97,24 @@ class Shypy(Utils):
             ║*                       *║ Developed by Atahan Poyraz ║*                   *║
             ╚═════════════════════════╩════════════════════════════╩═════════════════════╝\n""")
         
-            option = input(f"{COLOR["CYAN"]}Shypy >> {COLOR["RESET"]}").lower()
+            option = input(f"{COLOR["CYAN"]}Shypy >> {COLOR["RESET"]}").lower().strip()
+            
             try:
                 if option.startswith("use"):                
-                    if option.split(" ")[1] in ("1", "keylogger generator"):
-                        Generator().run()
+                    if option.split(" ")[1] in ("1", "keylogger"):
+                        KeyloggerGenerator().run()
                         
-                    elif option.split(" ")[1] in ("2", "ransomware generator"):
-                        ...
+                    elif option.split(" ")[1] in ("2", "ransomware"):
+                        RansomwareGenerator().run()
                     
-                    elif option.split(" ")[1] in ("3", "camera recorder generator"):
-                        ...
+                    elif option.split(" ")[1] in ("3", "camera recorder"):
+                        CameraRecorderGenerator().run()
                         
-                    elif option.split(" ")[1] in ("4", "screen recorder generator"):
-                        ...
+                    elif option.split(" ")[1] in ("4", "screen recorder"):
+                        ScreenRecorderGenerator().run()
                         
-                    elif option.split(" ")[1] in ("5", "backdoor generator"):
-                        ...
+                    elif option.split(" ")[1] in ("5", "backdoor"):
+                        BackDoorGenerator().run()
                         
                     else:
                         self.write(message="Invalid Module", level=4, delay=1, clear=True)
@@ -115,6 +122,7 @@ class Shypy(Utils):
             
                 elif option == "exit":
                     self.write(message="Exited from Shypy", level=2, delay=0, clear=True)
+                    sys.exit(1)
 
                 else:
                     self.write(message="Invalid Option", level=4, delay=1, clear=True)

