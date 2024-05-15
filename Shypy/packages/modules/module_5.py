@@ -28,16 +28,16 @@ class BackDoorGenerator(ModuleUtils):
             ╠═════════════════════════════════════╦════════════════════════════════════╣ 
             ║              Commands               ║            Function                ║    
             ╠═════════════════════════════════════╬════════════════════════════════════╣   
-            ║ "set ip <ip adress>"                : Set IP Adress.                     ║ 
-            ║ "set port <port>"                   : Set Port                           ║
+            ║ "set lhost <ip adress>"             : Set IP Adress.                     ║ 
+            ║ "set lport <port>"                  : Set Port                           ║
             ║ "set payload" <payload name>        : Set Payload.                       ║ 
             ║ "show payloads"                     : Showing all Payloads.              ║ 
             ║ "generate"                          : Generate a Back Door.              ║
             ║ "back"                              : Back To Shypy.                     ║
             ╠═════════════════════════════════════╬════════════════════════════════════╣
-            ║*               IP                   : {COLOR['RESET']}{self.ip}{COLOR['CYAN']}{' ' *  (35 - len(self.ip))}║
+            ║*              LHOST                 : {COLOR['RESET']}{self.ip}{COLOR['CYAN']}{' ' *  (35 - len(self.ip))}║
             ╠═════════════════════════════════════╬════════════════════════════════════╣
-            ║*              Port                  : {COLOR['RESET']}{self.port}{COLOR['CYAN']}{' ' *  (35 - len(self.port))}║
+            ║*              LPORT                 : {COLOR['RESET']}{self.port}{COLOR['CYAN']}{' ' *  (35 - len(self.port))}║
             ╠═════════════════════════════════════╬════════════════════════════════════╣
             ║*             Payload                : {COLOR['RESET']}{self.payload}{COLOR['CYAN']}{' ' * (35 - len(self.payload))}║                                             
             ╠═════════════════════════════════════╩════════════════════════════════════╣            
@@ -47,22 +47,22 @@ class BackDoorGenerator(ModuleUtils):
         
         answer = input(f"{COLOR['CYAN']}Shypy >>{COLOR['RESET']} ").lower().strip()
         
-        if answer.startswith("set ip"):
+        if answer.startswith("set lhost"):
             try:
                 self.ip = answer.split(" ")[2]
                 self.run() 
             
             except IndexError:
-                self.write(message="set ip <ip>", level=4, delay=1, clear=False)
+                self.write(message="set lhost <ip>", level=4, delay=1, clear=False)
                 self.run()
 
-        elif answer.startswith("set port"):
+        elif answer.startswith("set lport"):
             try:
                 self.port = answer.split(" ")[2]
                 self.run()
             
             except IndexError:
-                self.write(message="set port <port>", level=4, delay=1, clear=False)
+                self.write(message="set lport <port>", level=4, delay=1, clear=False)
                 self.run()
         
         elif answer.startswith("set payload"):
