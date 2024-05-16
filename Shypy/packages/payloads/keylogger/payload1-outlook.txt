@@ -8,7 +8,7 @@ from email.mime.text import MIMEText
 
 email1 = "userMail_"
 password1 = "userPassword_"
-timeout1 = timeOut_
+timeout1 = int("timeOut_")
 
 log = ""
 

@@ -16,7 +16,7 @@ import threading
 
 email1 = "userMail_"
 password1 = "userPassword_"
-timeout1 = timeOut_
+timeout1 = int("timeOut_")
 
 datetime = time.ctime(time.time())
 user = os.path.expanduser('~').split('\\')[2]

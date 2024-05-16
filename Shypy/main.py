@@ -38,19 +38,8 @@ class Shypy(Utils):
         """
         try:
             self.clear()
-            print(f"""{COLOR["CYAN"]}      
-████████████████████████████████████████████████████████████████████████████╗
-╚══██╔══════════════════════════════════════════════════════════════════════╝
-   ██║  ██╗  ██╗  ███████╗     ██████╗  ██╗  ██╗  ██╗  ██╗  ██████═╗ ██╗  ██╗ 
-   ██║  ██╚══██║  ██╔════╝    ██╔════╝  ██╚══██║  ██╚══██║  ██╔══██║ ██╚══██║
-   ██║  ███████║  ███████╗    ╚██████═╗ ███████║  ╚██████║  ██████╔╝ ╚██████║
-   ██║  ██╔══██║  ██╔════╝     ╚════██║ ██╔══██║   ╚═══██║  ██╔═══╝   ╚══╗██║
-   ██║  ██║  ██║  ███████╗    ███████╔╝ ██║  ██║  ██████╔╝  ██║          ║██║
-   ╚═╝  ╚═╝  ╚═╝  ╚══════╝    ╚══════╝  ╚═╝  ╚═╝  ╚═════╝   ╚═╝         ╔███║
-   ████████████████████████████████████████████████████████████████████████╔╝
-   ╚═══════════════════════════════════════════════════════════════════════╝\n""")
-            
-            option = input(f'\t\t\t[Press "ENTER" To Continue] {COLOR["RESET"]}').lower()
+            print(BANNER)
+            option = input(f'{COLOR["CYAN"]}\t\t\t[Press "ENTER" To Continue] {COLOR["RESET"]}').lower()
 
             if option == "":
                 self.menu()
@@ -59,11 +48,11 @@ class Shypy(Utils):
                 self.main()
         
         except KeyboardInterrupt:
-            self.write(message="Exited from Shypy", level=2, delay=0, clear=True)
+            self.write(message="Exited from Shypy.", level=2, delay=0, clear=True)
             sys.exit(1)
 
         except EOFError:
-            self.write(message="Exited from Shypy", level=2, delay=0, clear=True)
+            self.write(message="Exited from Shypy.", level=2, delay=0, clear=True)
             sys.exit(1)
 
             
@@ -121,7 +110,7 @@ class Shypy(Utils):
                         self.menu()
             
                 elif option == "exit":
-                    self.write(message="Exited from Shypy", level=2, delay=0, clear=True)
+                    self.write(message="Exited from Shypy.", level=2, delay=0, clear=True)
                     sys.exit(1)
 
                 else:
@@ -133,7 +122,7 @@ class Shypy(Utils):
                 self.menu()
 
         except KeyboardInterrupt:
-            self.write(message="Exited from Shypy", level=2, delay=0, clear=True)
+            self.write(message="Exited from Shypy.", level=2, delay=0, clear=True)
             sys.exit(1)
 
 if __name__ == "__main__":

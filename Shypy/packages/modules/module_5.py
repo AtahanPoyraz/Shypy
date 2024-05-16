@@ -1,5 +1,4 @@
 import importlib
-
 from ..variables.variables import *
 from ..utils.module_utils import *
 
@@ -10,6 +9,10 @@ class BackDoorGenerator(ModuleUtils):
     generating the backdoor.
     """
     def __init__(self) -> None:
+        """
+        Constructor method for the Generator class.
+        Initializes the ip, port and payload attributes.
+        """
         super().__init__()
         self.ip      = ""
         self.port    = ""
@@ -22,6 +25,7 @@ class BackDoorGenerator(ModuleUtils):
         displaying available payloads and generating the backdoor.
         """
         self.clear()
+        
         print(f"""{COLOR['CYAN']}
             ╔══════════════════════════════════════════════════════════════════════════╗
             ║*                          - BackDoor Generator -                        *║

