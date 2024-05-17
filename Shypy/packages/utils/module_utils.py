@@ -194,26 +194,33 @@ class ModuleUtils(Utils):
         Returns:
             list[str]: A list of available payload names.
         """
-        self.clear()
-        payloads : list[str] = os.listdir(f"./packages/payloads/{module}/")
-        print(f"""{COLOR['CYAN']}
-            ╔══════════════════════════════════════════════════════════════════════════╗
-            ║*                               - PAYLOADS -                             *║
-            ╠══════════════════════════════════════╦═══════════════════════════════════╣
-            ║            Payload Number            ║           Payload Name            ║         
-            ╠══════════════════════════════════════╩═══════════════════════════════════╣ """)
-        i = 0
-        for payload in payloads:
-            i += 1
-            print(f"\t    ║ [{i}] {COLOR['RESET']}{payload}{COLOR['CYAN']} {' ' * (68 - len(payload))}║")
-
-        print("\t    ╚══════════════════════════════════════════════════════════════════════════╝")
-        
-        chc = input("\nPress [Enter] To Continue.  ")
-        
-        if chc == "":
-            self.run()
-            
-        else:
+        try:
             self.clear()
-            self.listPayloads(module)
+            payloads : list[str] = os.listdir(f"./packages/payloads/{module}/")
+            print(f"""{COLOR['CYAN']}
+                ╔══════════════════════════════════════════════════════════════════════════╗
+                ║*                               - PAYLOADS -                             *║
+                ╠══════════════════════════════════════╦═══════════════════════════════════╣
+                ║            Payload Number            ║           Payload Name            ║         
+                ╠══════════════════════════════════════╩═══════════════════════════════════╣ """)
+            i = 0
+            for payload in payloads:
+                i += 1
+                print(f"\t\t║ [{i}] {COLOR['RESET']}{payload}{COLOR['CYAN']} {' ' * (68 - len(payload))}║")
+
+            print("\t\t╚══════════════════════════════════════════════════════════════════════════╝")
+            
+            chc = input(f"\n  {"\t" * 5}Press [Enter] To Continue.  ")
+            
+            if chc == "":
+                self.run()
+                
+            else:
+                self.clear()
+                self.listPayloads(module)
+        
+        except AttributeError:
+            self.list_payloads(module)
+        
+        except Exception as e:
+            self.write(message=f"ERROR: {str(e)}", level=4, clear=True)

