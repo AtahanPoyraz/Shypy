@@ -42,7 +42,7 @@ class BackDoorGenerator(ModuleUtils):
             ╠═════════════════════════════════════╬════════════════════════════════════╣
             ║*              LHOST                 : {COLOR['RESET']}{self.ip}{COLOR['CYAN']}{' ' *  (35 - len(self.ip))}║
             ╠═════════════════════════════════════╬════════════════════════════════════╣
-            ║*              LPORT                 : {COLOR['RESET']}{self.port}{COLOR['CYAN']}{' ' *  (35 - len(self.port))}║
+            ║*              LPORT                 : {COLOR['RESET']}{str(self.port)}{COLOR['CYAN']}{' ' *  (35 - len(str(self.port)))}║
             ╠═════════════════════════════════════╬════════════════════════════════════╣
             ║*             Payload                : {COLOR['RESET']}{self.payload}{COLOR['CYAN']}{' ' * (35 - len(self.payload))}║                                             
             ╠═════════════════════════════════════╩════════════════════════════════════╣            
@@ -63,11 +63,15 @@ class BackDoorGenerator(ModuleUtils):
 
         elif answer.startswith("set lport"):
             try:
-                self.port = answer.split(" ")[2]
+                self.port = int(answer.split(" ")[2])
                 self.run()
-            
+                    
             except IndexError:
                 self.write(message="set lport <port>", level=4, delay=1, clear=False)
+                self.run()
+                
+            except ValueError:
+                self.write(message="Please enter integer type", level=4, delay=1, clear=False)
                 self.run()
         
         elif answer.startswith("set payload"):
@@ -83,8 +87,8 @@ class BackDoorGenerator(ModuleUtils):
             self.list_payloads(self.module)
 
         elif answer == "generate":
-            if self.payload == "":
-                self.write(message="Please Select a Payload.", level=4, delay=1, clear=False)
+            if self.ip == "" or self.port == "" or self.payload == "":
+                self.write(message="Please fill in the required fields.", level=4, delay=1, clear=False)
                 self.run()
             
             else:

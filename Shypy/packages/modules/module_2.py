@@ -48,7 +48,7 @@ class RansomwareGenerator(ModuleUtils):
         
         if answer == "generate":
             if self.payload == "":
-                self.write(message="Please Select a Payload.", level=4, delay=1, clear=False)
+                self.write(message="Please fill in the required fields.", level=4, delay=1, clear=False)
                 self.run()
             
             else:
