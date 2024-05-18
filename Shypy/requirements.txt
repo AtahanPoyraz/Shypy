@@ -5,7 +5,6 @@ simplejson
 mouse
 MouseInfo
 pyautogui
-socket
 pyinstaller
 pynput
 cryptography

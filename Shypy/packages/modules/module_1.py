@@ -78,8 +78,13 @@ class KeyloggerGenerator(ModuleUtils):
 
         elif answer.startswith("set timeout"):
             try:
-                self.time_out = answer.split(" ")[2]
-                self.run()
+                if isinstance(answer.split(" ")[2], int):
+                    self.time_out = answer.split(" ")[2]
+                    self.run()
+                    
+                else:
+                    self.write(message="Please enter integer type", level=4, delay=1, clear=False)
+                    self.run()
             
             except IndexError:
                 self.write(message="set timeout <delay>", level=4, delay=1, clear=False)

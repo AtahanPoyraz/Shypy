@@ -29,7 +29,31 @@ class ModuleUtils(Utils):
                         - mail (str): User email for payload replacement.
                         - password (str): User password for payload replacement.
                         - timeout (int): Timeout value for payload replacement.
+                        
+                    Ransomware:
+                        - name (str): The name of the output file.
+                        - module (str): The module name.
+                        - icon_path (str): The path to the icon file for the executable.
+                        - payload (str): The payload file name.
                     
+                    CameraRecorder:
+                        - name (str): The name of the output file.
+                        - module (str): The module name.
+                        - icon_path (str): The path to the icon file for the executable.
+                        - payload (str): The payload file name.
+                        - mail (str): User email for payload replacement.
+                        - password (str): User password for payload replacement.
+                        - timeout (int): Timeout value for payload replacement.
+                    
+                    ScreenRecorder:
+                        - name (str): The name of the output file.
+                        - module (str): The module name.
+                        - icon_path (str): The path to the icon file for the executable.
+                        - payload (str): The payload file name.
+                        - mail (str): User email for payload replacement.
+                        - password (str): User password for payload replacement.
+                        - timeout (int): Timeout value for payload replacement.
+                        
                     Backdoor:
                         - name (str): The name of the output file.
                         - module (str): The module name.

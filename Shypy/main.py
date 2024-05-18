@@ -121,7 +121,7 @@ class Shypy(Utils):
                 self.write(message="Invalid Module", level=4, delay=1, clear=True)
                 self.menu()
 
-        except KeyboardInterrupt:
+        except KeyboardInterrupt:   
             self.write(message="Exited from Shypy.", level=2, delay=0, clear=True)
             sys.exit(1)
 

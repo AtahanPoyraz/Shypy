@@ -14,18 +14,19 @@ COLOR = {
 
 OS = platform.system().lower()
 
-LIBS = [
-    "pynput", 
-    "cv2", 
-    "pyautogui", 
-    "cryptography", 
-    "simplejson", 
-    "pyarmor", 
-    "mouse", 
-    "mouseinfo", 
-    "requests", 
-    "win32gui"
-    ]
+LIBS = {
+    "pynput"       :  "pynput", 
+    "cv2"          :  "opencv-python", 
+    "pyautogui"    :  "pyautogui", 
+    "cryptography" :  "cryptography", 
+    "simplejson"   :  "simplejson", 
+    "pyarmor"      :  "pyarmor", 
+    "mouse"        :  "mouse", 
+    "mouseinfo"    :  "mouseinfo", 
+    "requests"     :  "requests", 
+    "pywin"        :  "pywin32",
+    "PyInstaller"  :  "pyinstaller"
+}
 
 BANNER = f"""{COLOR["CYAN"]}
 ████████████████████████████████████████████████████████████████████████████╗
