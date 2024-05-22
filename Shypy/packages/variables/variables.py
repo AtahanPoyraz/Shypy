@@ -12,6 +12,8 @@ COLOR = {
     'CYAN'      : '\u001b[36;1m',
 }
 
+FLAG = "Shypy >> "
+
 OS = platform.system().lower()
 
 LIBS = {

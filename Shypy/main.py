@@ -80,13 +80,13 @@ class Shypy(Utils):
             ║[4] Screen Recorder Generator         :    [ Windows | Linux | MacOS ]      ║   
             ║[5] Back Door Generator               :    [ Windows | Linux | MacOS ]      ║
             ╠══════════════════════════════════════╬═════════════════════════════════════╣
-            ║ "use" <num>                          : Used To Select Modules.             ║
+            ║ "use" <number>                       : Used To Select Modules.             ║
             ║ "exit"                               : To Log Out Of ShyPy.                ║  
             ╠═════════════════════════╦════════════╩═══════════════╦═════════════════════╣
             ║*                       *║ Developed by Atahan Poyraz ║*                   *║
             ╚═════════════════════════╩════════════════════════════╩═════════════════════╝\n""")
         
-            option = input(f"{COLOR["CYAN"]}Shypy >> {COLOR["RESET"]}").lower().strip()
+            option = input(f"{COLOR["CYAN"]}{FLAG}{COLOR["RESET"]}").lower().strip()
             
             try:
                 if option.startswith("use"):                
@@ -106,7 +106,7 @@ class Shypy(Utils):
                         BackDoorGenerator().run()
                         
                     else:
-                        self.write(message="Invalid Module", level=4, delay=1, clear=True)
+                        self.write(message="Invalid Module.", level=4, delay=1, clear=True)
                         self.menu()
             
                 elif option == "exit":
@@ -114,11 +114,11 @@ class Shypy(Utils):
                     sys.exit(1)
 
                 else:
-                    self.write(message="Invalid Option", level=4, delay=1, clear=True)
+                    self.write(message="Invalid Option.", level=4, delay=1, clear=True)
                     self.menu()
                     
             except IndexError:
-                self.write(message="Invalid Module", level=4, delay=1, clear=True)
+                self.write(message="Invalid Module.", level=4, delay=1, clear=True)
                 self.menu()
 
         except KeyboardInterrupt:   

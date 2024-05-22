@@ -14,10 +14,10 @@ class BackDoorGenerator(ModuleUtils):
         Initializes the ip, port and payload attributes.
         """
         super().__init__()
-        self.module  = "backdoor"
-        self.ip      = ""
-        self.port    = ""
-        self.payload = ""
+        self.module  : str = "backdoor"
+        self.ip      : str = ""
+        self.port    : str = ""
+        self.payload : str = ""
     
     def run(self) -> None:
         """
@@ -50,7 +50,7 @@ class BackDoorGenerator(ModuleUtils):
             ╚══════════════════════════════════════════════════════════════════════════╝
             \n\n""")
         
-        answer = input(f"{COLOR['CYAN']}Shypy >>{COLOR['RESET']} ").lower().strip()
+        answer = input(f"{COLOR['CYAN']}{FLAG}{COLOR['RESET']}").lower().strip()
         
         if answer.startswith("set lhost"):
             try:
@@ -71,7 +71,7 @@ class BackDoorGenerator(ModuleUtils):
                 self.run()
                 
             except ValueError:
-                self.write(message="Please enter integer type", level=4, delay=1, clear=False)
+                self.write(message="Please enter integer type.", level=4, delay=1, clear=False)
                 self.run()
         
         elif answer.startswith("set payload"):
@@ -105,5 +105,5 @@ class BackDoorGenerator(ModuleUtils):
             importlib.import_module("main").Shypy().menu()
 
         else:
-            self.write(message="Invalid Option", level=4, delay=1, clear=False)
+            self.write(message="Invalid Option.", level=4, delay=1, clear=False)
             self.run()

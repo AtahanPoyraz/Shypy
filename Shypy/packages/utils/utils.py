@@ -30,7 +30,7 @@ class Utils:
                 os.system("clear")
                 
         except KeyboardInterrupt:
-            self.write(message="Exited from Shypy", level=2, clear=True)
+            self.write(message="Exited from Shypy.", level=2, clear=True)
             sys.exit(1)
             
     def module_exist(self, module : str) -> bool:
@@ -107,7 +107,7 @@ class Utils:
         Returns:
             None
         """
-        self.write(message="Loading requirements please be patient", level=1)
+        self.write(message="Loading requirements please be patient.", level=1)
         for lib in libraries:
             os.system(f"pip install {lib}")
     
@@ -136,7 +136,7 @@ class Utils:
                 self.clear()
                 i : int = 0
                 for c in cycle(["⢎⡰", "⢎⡡", "⢎⡑", "⢎⠱", "⠎⡱", "⢊⡱", "⢌⡱", "⢆⡱"]):
-                    sys.stdout.write(f'\r{COLOR["CYAN"]}Shypy >> {COLOR["RESET"]}{datetime.datetime.now().strftime("%H:%M:%S")} Checking Requirements..{COLOR["CYAN"]} {c} {COLOR["RESET"]}\t')
+                    sys.stdout.write(f'\r{COLOR["CYAN"]}{FLAG}{COLOR["RESET"]}{datetime.datetime.now().strftime("%H:%M:%S")} Checking Requirements..{COLOR["CYAN"]} {c} {COLOR["RESET"]}\t')
                     sys.stdout.flush()
                     time.sleep(0.07)
                     i += 1
@@ -148,7 +148,7 @@ class Utils:
                         continue
                     
             except (KeyboardInterrupt):
-                self.write(message="Exited from Shypy", level=2, clear=True)
+                self.write(message="Exited from Shypy.", level=2, clear=True)
                 sys.exit(1)
 
         try:
@@ -174,11 +174,11 @@ class Utils:
                         sys.exit(1)
                 
                 except EOFError:
-                    self.write(message="Exited from Shypy", level=2, clear=True)
+                    self.write(message="Exited from Shypy.", level=2, clear=True)
                     sys.exit(1)
                 
                 except KeyboardInterrupt:
-                    self.write(message="Exited from Shypy", level=2, clear=True)
+                    self.write(message="Exited from Shypy.", level=2, clear=True)
                     sys.exit(1)
                 
             else:
@@ -186,5 +186,5 @@ class Utils:
                 time.sleep(1)
 
         except KeyboardInterrupt:
-            self.write(message="Exited from Shypy", level=2, clear=True)
+            self.write(message="Exited from Shypy.", level=2, clear=True)
             sys.exit(1)
