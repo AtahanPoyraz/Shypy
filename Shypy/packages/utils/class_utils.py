@@ -136,7 +136,7 @@ class Utils:
                 self.clear()
                 i : int = 0
                 for c in cycle(["⢎⡰", "⢎⡡", "⢎⡑", "⢎⠱", "⠎⡱", "⢊⡱", "⢌⡱", "⢆⡱"]):
-                    sys.stdout.write(f'\r{COLOR["CYAN"]}{FLAG}{COLOR["RESET"]}{datetime.datetime.now().strftime("%H:%M:%S")} Checking Requirements..{COLOR["CYAN"]} {c} {COLOR["RESET"]}\t')
+                    sys.stdout.write(f'\r{COLOR["CYAN"]}{FLAG}{COLOR["RESET"]}| {datetime.datetime.now().strftime("%H:%M:%S")} | Checking Requirements..{COLOR["CYAN"]} {c} {COLOR["RESET"]}\t')
                     sys.stdout.flush()
                     time.sleep(0.07)
                     i += 1

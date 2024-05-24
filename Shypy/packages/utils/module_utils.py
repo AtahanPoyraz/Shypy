@@ -1,7 +1,7 @@
 import os
 import shutil
 from ..variables.variables import *
-from ..utils.utils import *
+from .class_utils import *
 
 class ModuleUtils(Utils):
     """
@@ -100,7 +100,7 @@ class ModuleUtils(Utils):
         """
         try:
             self.clear()
-            payload_path : str = os.path.join("packages", "payloads", kwargs["module"], kwargs["payload"])
+            payload_path : str = os.path.join(PARENT_FOLDER, "packages", "payloads", kwargs["module"], kwargs["payload"])
             payload_location = os.path.abspath(os.path.join(os.getcwd(), payload_path))
         
             match str(kwargs["module"]).lower():
@@ -195,17 +195,15 @@ class ModuleUtils(Utils):
             module (str): The name of the module used.
         """
         self.name_exe = name.replace(".py", ".exe")
-        self.exe_location = os.path.abspath(self.name_exe)
-        self.parent_folder = os.path.abspath(os.path.join(self.exe_location, os.pardir))
         
-        os.remove(os.path.join(self.parent_folder, name))
-        os.remove(os.path.join(self.parent_folder, "dist", name))
-        os.remove(os.path.join(self.parent_folder, name.replace("py", "spec")))
+        os.remove(os.path.join(PARENT_FOLDER, name))
+        os.remove(os.path.join(PARENT_FOLDER, "dist", name))
+        os.remove(os.path.join(PARENT_FOLDER, name.replace("py", "spec")))
         
-        shutil.rmtree(os.path.join(self.parent_folder, "dist", "pyarmor_runtime_000000"))
-        shutil.rmtree(os.path.join(self.parent_folder, "build", name.replace(".py", "")))
+        shutil.rmtree(os.path.join(PARENT_FOLDER, "dist", "pyarmor_runtime_000000"))
+        shutil.rmtree(os.path.join(PARENT_FOLDER, "build", name.replace(".py", "")))
         
-        self.write(message=f"{module.capitalize()} Was Created On this Location: {os.path.join(self.parent_folder, "dist", self.name_exe)}", level=4, clear=False)
+        self.write(message=f"{module.capitalize()} Was Created On this Location: {os.path.join(PARENT_FOLDER, "dist", self.name_exe)}", level=4, clear=True)
             
     def list_payloads(self, module : str) -> list[str]:
         """
@@ -217,23 +215,45 @@ class ModuleUtils(Utils):
         Returns:
             list[str]: A list of available payload names.
         """
+        def get_descriptions(payloads: list[str]) -> list[str]:
+            """
+            Reads the first line of the specified payload file and returns it as a description.
+            
+            Args:
+                payload_name (str): The name of the payload file to read.
+                
+            Returns:
+                str: The description extracted from the first line of the file, with '#' characters removed and whitespace stripped.
+            """
+            descriptions : list[str] = []
+            for payload in payloads:
+                with open(os.path.join(PARENT_FOLDER, "packages", "payloads", module, payload), "r", encoding="utf-8") as file:
+                    description = file.readline().replace("#", "").strip()
+                    descriptions.append(description)
+                    
+            return descriptions
+        
         try:
             self.clear()
-            payloads : list[str] = os.listdir(os.path.join("packages", "payloads", module))
-            print(f"""{COLOR['CYAN']}
-                ╔══════════════════════════════════════════════════════════════════════════╗
-                ║*                               - PAYLOADS -                             *║
-                ╠══════════════════════════════════════╦═══════════════════════════════════╣
-                ║            Payload Number            ║           Payload Name            ║         
-                ╠══════════════════════════════════════╩═══════════════════════════════════╣ """)
-            i = 0
-            for payload in payloads:
-                i += 1
-                print(f"\t\t║ [{i}] {COLOR['RESET']}{payload}{COLOR['CYAN']} {' ' * (68 - len(payload))}║")
-
-            print("\t\t╚══════════════════════════════════════════════════════════════════════════╝")
+            payloads : list[str] = os.listdir(os.path.join(PARENT_FOLDER, "packages", "payloads", module))
+            descriptions : list[str] = get_descriptions(payloads)
             
-            chc = input(f"\n  {"\t" * 5}Press [Enter] To Continue.  ")
+            print(f"""{COLOR["CYAN"]}               
+            ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+            ║*                                                          - PAYLOADS -                                                           *║
+            ╠═════╦══════════════════════════╦══════════════════════════════════════════════════════════════════════════════════════════════════╣
+            ║ Num ║       Payload Name       ║                                      Payload Description                                         ║  
+            ╠═════╬══════════════════════════╬══════════════════════════════════════════════════════════════════════════════════════════════════╣""")
+
+            for i, payload in enumerate(payloads):
+                padding_name : int = 24 - len(payloads[i]) 
+                padding_desc : int = 97 - len(descriptions[i]) 
+                
+                print(f"\t{' ' * 4}║ {str(i).zfill(2)}  : {payload}{' ' * padding_name} : {descriptions[i]}{' ' * padding_desc}║")
+                
+            print(f"""\t{' ' * 4}╚═════╩══════════════════════════╩══════════════════════════════════════════════════════════════════════════════════════════════════╝""")
+            
+            chc = input(f"\n{' ' * 6}{"\t" * 8}Press [Enter] To Continue.  ")
             
             if chc == "":
                 self.run()

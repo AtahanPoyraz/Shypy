@@ -1,3 +1,5 @@
+#Connects to a server for command execution, directory manipulation, and file transfer.
+
 import socket
 import subprocess
 import time

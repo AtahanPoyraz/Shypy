@@ -1,4 +1,5 @@
 import importlib
+
 from ..utils.module_utils import *
 from ..variables.variables import *
 
@@ -36,7 +37,7 @@ class ScreenRecorderGenerator(ModuleUtils):
             ╠═════════════════════════════════════╦════════════════════════════════════╣ 
             ║              Commands               ║            Function                ║    
             ╠═════════════════════════════════════╬════════════════════════════════════╣   
-            ║ "set mail <email>"                  : Set Mail Adress.                   ║ 
+            ║ "set email <email>"                 : Set Mail Adress.                   ║ 
             ║ "set password <password>"           : Set Mail Password.                 ║
             ║ "set timeout <time>"                : Set Time Out.                      ║ 
             ║ "set payload" <payload name>        : Set Payload.                       ║ 
@@ -48,7 +49,7 @@ class ScreenRecorderGenerator(ModuleUtils):
             ╠═════════════════════════════════════╬════════════════════════════════════╣
             ║*            Password                : {COLOR['RESET']}{self.password}{COLOR['CYAN']}{' ' *  (35 - len(self.password))}║
             ╠═════════════════════════════════════╬════════════════════════════════════╣
-            ║*            Time Out                : {COLOR['RESET']}{str(self.time_out)}{COLOR['CYAN']}{' ' *  (35 - len(str(self.time_out)))}║
+            ║*            Time-Out                : {COLOR['RESET']}{str(self.time_out)}{COLOR['CYAN']}{' ' *  (35 - len(str(self.time_out)))}║
             ╠═════════════════════════════════════╬════════════════════════════════════╣
             ║*             Payload                : {COLOR['RESET']}{self.payload}{COLOR['CYAN']}{' ' * (35 - len(self.payload))}║                                             
             ╠═════════════════════════════════════╩════════════════════════════════════╣            

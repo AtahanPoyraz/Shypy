@@ -1,6 +1,6 @@
 import sys
 
-from packages.utils.utils import *
+from packages.utils.class_utils import *
 from packages.variables.variables import *
 
 from packages.modules.module_1 import KeyloggerGenerator
@@ -39,7 +39,7 @@ class Shypy(Utils):
         try:
             self.clear()
             print(BANNER)
-            option = input(f'{COLOR["CYAN"]}\t\t\t[Press "ENTER" To Continue] {COLOR["RESET"]}').lower()
+            option = input(f'{COLOR["CYAN"]}{'\t' * 4}{' ' * 6}[Press "ENTER" To Continue] {COLOR["RESET"]}').lower()
 
             if option == "":
                 self.menu()
@@ -70,7 +70,7 @@ class Shypy(Utils):
             self.clear()
             print(f"""{COLOR['CYAN']}
             ╔════════════════════════════╦══════════════════════╦════════════════════════╗
-            ║* Version    :     0.1     *║ Welcome To The Shypy ║*                      *║
+            ║* Version : {V} {' ' * 9}  *║ Welcome To The Shypy ║*     {' ' * 10}       *║
             ╠════════════════════════════╩═════════╦════════════╩════════════════════════╣
             ║             Module Name              ║          Operating System           ║  
             ╠══════════════════════════════════════╬═════════════════════════════════════╣
@@ -81,7 +81,7 @@ class Shypy(Utils):
             ║[5] Back Door Generator               :    [ Windows | Linux | MacOS ]      ║
             ╠══════════════════════════════════════╬═════════════════════════════════════╣
             ║ "use" <number>                       : Used To Select Modules.             ║
-            ║ "exit"                               : To Log Out Of ShyPy.                ║  
+            ║ "exit"                               : To Log Out Of Shypy.                ║  
             ╠═════════════════════════╦════════════╩═══════════════╦═════════════════════╣
             ║*                       *║ Developed by Atahan Poyraz ║*                   *║
             ╚═════════════════════════╩════════════════════════════╩═════════════════════╝\n""")
@@ -106,7 +106,7 @@ class Shypy(Utils):
                         BackDoorGenerator().run()
                         
                     else:
-                        self.write(message="Invalid Module.", level=4, delay=1, clear=True)
+                        self.write(message="Invalid Module.", level=4, delay=1, clear=False)
                         self.menu()
             
                 elif option == "exit":
@@ -114,11 +114,11 @@ class Shypy(Utils):
                     sys.exit(1)
 
                 else:
-                    self.write(message="Invalid Option.", level=4, delay=1, clear=True)
+                    self.write(message="Invalid Option.", level=4, delay=1, clear=False)
                     self.menu()
                     
             except IndexError:
-                self.write(message="Invalid Module.", level=4, delay=1, clear=True)
+                self.write(message="Invalid Module.", level=4, delay=1, clear=False)
                 self.menu()
 
         except KeyboardInterrupt:   
